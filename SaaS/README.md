@@ -11,7 +11,7 @@ __Important:__
 This writeup is an addition to the other writeups
 of this challenge. The other writeups show how to read the
 flag file but this writeup shows how to get full code execution.   
-Make sure to read [this writeup](https://github.com/Heinzeen/ctf/blob/master/Nahamcom_2020/saas/saas_writeup.md) by [Heinzeen](https://github.com/Heinzeenhttps://github.com/Heinzeen) to see the intended solution for this challenge.
+Make sure to read [this writeup](https://github.com/Heinzeen/ctf/blob/master/Nahamcom_2020/saas/saas_writeup.md) by [Heinzeen](https://github.com/Heinzeen) to see the intended solution for this challenge.
 
 ### Quick Recap
 The program lets us make arbitrary amd64 system calls except:
