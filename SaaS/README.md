@@ -67,8 +67,9 @@ struct kernel_sigaction
     sigset_t sa_mask;
 };
 ```
-```k_sa_handler``` is the handler function for the signal. This will be the address of our shellcode. ```sa_flags``` and ```sa_mask``` will be 0 since we don't want any special behaviour. ```sa_restorer``` normally contains a pointer to a function that restores the state of the process right before jumping to the signal handler. This is where sigreturn normally comes into play. In our case this field doesn't matter because
+```k_sa_handler``` is the handler function for the signal. This will be the address of our shellcode. ```sa_flags``` and ```sa_mask``` will be 0 since we don't want any special behaviour. ```sa_restorer``` normally contains a pointer to a function that restores the state of the process right before the signal handler was executed. This is where sigreturn normally comes into play. In our case this field doesn't matter because
 execve will replace the process anyway but in the exploit script I set this to the address of our shellcode.    
+
 ```oact``` also doesn't matter and can be NULL and ```sigsetsize``` is 8.
 
 ### Delivering a signal
@@ -78,14 +79,15 @@ I chose to deliver a signal with the ```sys_tgkill``` system call (number 234). 
 We can now combine everything into following exploit:
 1. mmap() a region for our shellcode (must be executable)
 2. Write our shellcode into the region
-3. mmap() a region for the ```struct sigaction``` with the following values:  
+3. mmap() a region for the ```struct sigaction```
+4. Write the following values into it:  
   - ```k_sa_handler``` = shellcode
   - ```sa_flags``` = 0
   - ```sa_restorer``` = shellcode (but doesn't matter really)
   - ```sa_mask``` = 0
-4. Install the signal handler
-5. Deliver the signal
-6. ???
-7. Profit
+5. Install the signal handler
+6. Deliver the signal
+7. ???
+8. Profit
 
 See [exploit.py](./exploit.py) for a concrete implementation.
